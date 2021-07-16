@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 # TODO : check score with between area and bedroomCount and without
@@ -37,24 +38,30 @@ class DataCleaner:
         # Dropping duplicated values
         self.df = self.df.drop_duplicates(subset=['area', 'price'], keep='last')
 
-        # Deleting least corrleated columns
+        # Dropping outliers
+        self.df = self.df[self.df['price'] < 7000000]
+        self.df = self.df[self.df['area'] < 1350]
+
+        # ploting behaviors
+        #plt.scatter(self.df.area, self.df.price)
+        #plt.show()
+
+        # Deleting least correlated columns
         self.df = self.df.drop(
             ['kitchenType', 'typeSale', 'subtypeSale', 'terraceSurface', 'isFurnished', 'gardenSurface'], axis=1)
 
-        subtypeProperty = pd.DataFrame(self.df.groupby('subtypeProperty').sum().index.to_list())
+        # cleaning features with less than 5 occurrences
+        features = ['postalCode', 'facadeCount', 'subtypeProperty', 'BedroomsCount']
+        for feature in features:
+            self.df = self.df[self.df[feature].map(self.df[feature].value_counts()) > 5]
 
-        def getIndexSubtypeProp(x):
-            return subtypeProperty.index[subtypeProperty[0] == x].tolist()[0]
+        # Transform  variables into features
+        features = ['postalCode', 'buildingCondition', 'subtypeProperty', 'fireplaceExists',
+                    'hasSwimmingPool', 'hasGarden', 'hasTerrace', 'hasFullyEquippedKitchen']
+        for feature in features:
+            cv_dummies = pd.get_dummies(self.df[feature])
+            if cv_dummies.columns.__len__() < 3:
+                cv_dummies.columns = [feature + 'True', feature + 'False']
+            self.df = pd.concat([self.df, cv_dummies], axis=1)
+            del self.df[feature]
 
-        self.df['subtypeProperty'] = self.df['subtypeProperty'].apply(
-            lambda x: getIndexSubtypeProp(x) if not pd.isnull(x) else -1)
-
-        buildingCondition = pd.DataFrame(self.df.groupby('buildingCondition').sum().index.to_list())
-
-        print(buildingCondition)
-
-        def getBuildingCondition(x):
-            return buildingCondition.index[buildingCondition[0] == x].tolist()[0]
-
-        self.df['buildingCondition'] = self.df['buildingCondition'].apply(
-            lambda x: getBuildingCondition(x) if not pd.isnull(x) else -1)
