@@ -20,6 +20,6 @@ dataAnalyser.clean()
 
 predictions = dataRegressor.predict(dataAnalyser.df)
 print('######## data to predict ############')
-print(dataAnalyser.df.head().price**4)
+print(dataAnalyser.df.head().price)
 print('#########" predictions ###########"')
 print(predictions)

@@ -39,6 +39,7 @@ class DataRegressor:
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=42)
 
         self.regressor.fit(X_train, y_train)
+
         print( '############# LINEAR REGRESSOR #############')
         print('Train score', self.regressor.score(X_train, y_train))
         print('Test score', self.regressor.score(X_test, y_test))
@@ -46,7 +47,7 @@ class DataRegressor:
 
         plt.figure()
         plt.scatter(y_test, predictions, color='r')
-        plt.title('Degree ' + str(self.regressor))
+        plt.title('PREDICTIONS VS y_test')
         plt.xlabel('y_test')
         plt.ylabel('predictions')
 
@@ -55,9 +56,9 @@ class DataRegressor:
         plt.scatter(X_test[:,1]**2, np.exp(y_test), color='r')
         plt.xlabel('area')
         plt.ylabel('price')
-        """
+
         # GRADIENT BOOST
-        clf = ensemble.GradientBoostingRegressor(n_estimators=400, max_depth=5, min_samples_split=2,
+        clf = ensemble.GradientBoostingRegressor(n_estimators=400, max_depth=2, min_samples_split=2,
                                                  learning_rate=0.1, loss='ls')
         clf.fit(X_train, y_train)
         print( '############# BOOST #############')
@@ -66,17 +67,18 @@ class DataRegressor:
 
         predictions = clf.predict(X_test)
         plt.scatter(y_test, predictions, color='r')
-        plt.title('Degree ' + str(degree))
+        plt.title('BOOST PREDICTIONS')
         plt.xlabel('y_test')
         plt.ylabel('predictions boosted')
 
         plt.figure()
-        plt.scatter(X_test[:,2]**2, np.exp(predictions), color='b')
-        plt.scatter(X_test[:,2]**2, np.exp(y_test), color='r')
+        plt.scatter(X_test[:,1]**2, np.exp(predictions), color='b')
+        plt.scatter(X_test[:,1]**2, np.exp(y_test), color='r')
         plt.title('PREDICTIONS BOOSTED')
         plt.xlabel('area')
         plt.ylabel('price')
-        """
+        plt.legend()
+
 
     def predict(self, df):
         self.adjustToTrainedModelDF(df)
@@ -84,6 +86,22 @@ class DataRegressor:
 
         y = self.newData['price'].to_numpy()
         X = self.newData.drop(['price'], axis=1).to_numpy()
+
+        print( '############# LINEAR REGRESSOR #############')
+        print('score', self.regressor.score(X, y))
+        predictions = self.regressor.predict(X)
+
+        plt.figure()
+        plt.scatter(y, predictions, color='r')
+        plt.title('Degree ' + str(self.regressor))
+        plt.xlabel('y_test')
+        plt.ylabel('predictions')
+
+        plt.figure()
+        plt.scatter(X[:,1]**2, np.exp(predictions), color='b')
+        plt.scatter(X[:,1]**2, np.exp(y), color='r')
+        plt.xlabel('area')
+        plt.ylabel('price')
 
         return np.exp(self.regressor.predict(X))
 
