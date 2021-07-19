@@ -51,21 +51,17 @@ the boosted predictions, and the normalized data of the test dataframe)
 1. DataCleaner
 First, the data are cleaned. That means that we drop all the entirely empty rows, string values
 are cleaned up, outliers and properties without price and area indication are dropped, duplicates
-and columns with the lowest correlation rate are deleted, and some other minor riddances.
-
+and columns with the lowest correlation rate are deleted, and some other minor riddances.  
 To put everything ready for the rest of the process, the variables that remain are transformed into
 features.
 
 2. DataRegressor
 In the second step, the prediction is prepared. Firstly, the price, area, outside space and land
 surface are standardized. This is done in order to limit the differences and make the model more
-effective.
-
+effective.  
 Secondly, the database is split and into a train and test dataframe. The former is used to train the
-model. A gradient boost is implemented.
-
-In the final step, predictions are made using the test dataset.
-
+model. A gradient boost is implemented.  
+In the final step, predictions are made using the test dataset.  
 As an important addendum, we created a function that will prepare any new dataset to be pushed through
 the program and make predictions about the price.
 
