@@ -1,12 +1,8 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import PolynomialFeatures
-from sklearn import ensemble
 
 
 class DataRegressor:
@@ -57,29 +53,6 @@ class DataRegressor:
         plt.xlabel('area')
         plt.ylabel('price')
 
-        # GRADIENT BOOST
-        clf = ensemble.GradientBoostingRegressor(n_estimators=400, max_depth=2, min_samples_split=2,
-                                                 learning_rate=0.1, loss='ls')
-        clf.fit(X_train, y_train)
-        print( '############# BOOST #############')
-        print('Train score', clf.score(X_train, y_train))
-        print('Test score', clf.score(X_test, y_test))
-
-        predictions = clf.predict(X_test)
-        plt.scatter(y_test, predictions, color='r')
-        plt.title('BOOST PREDICTIONS')
-        plt.xlabel('y_test')
-        plt.ylabel('predictions boosted')
-
-        plt.figure()
-        plt.scatter(X_test[:,1]**2, np.exp(predictions), color='b')
-        plt.scatter(X_test[:,1]**2, np.exp(y_test), color='r')
-        plt.title('PREDICTIONS BOOSTED')
-        plt.xlabel('area')
-        plt.ylabel('price')
-        plt.legend()
-
-
     def predict(self, df):
         self.adjustToTrainedModelDF(df)
         self.newData = self.standardize(self.newData)
@@ -94,7 +67,7 @@ class DataRegressor:
         plt.figure()
         plt.scatter(y, predictions, color='r')
         plt.title('Degree ' + str(self.regressor))
-        plt.xlabel('y_test')
+        plt.xlabel('y')
         plt.ylabel('predictions')
 
         plt.figure()
