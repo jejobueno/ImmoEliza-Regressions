@@ -8,7 +8,7 @@ pd.set_option('display.max_columns', None)
 data = pd.read_csv('assets/housing-data.csv', index_col=0)
 
 dataAnalyser = DataCleaner(data)
-dataAnalyser.clean()
+dataAnalyser.clean(visualize_flag=True)
 
 dataRegressor = DataRegressor(dataAnalyser.df)
 dataRegressor.trainModel()
@@ -19,7 +19,3 @@ dataAnalyser = DataCleaner(data)
 dataAnalyser.clean()
 
 predictions = dataRegressor.predict(dataAnalyser.df)
-print('######## data to predict ############')
-print(dataAnalyser.df.head().price)
-print('#########" predictions ###########"')
-print(predictions)

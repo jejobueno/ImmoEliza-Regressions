@@ -1,13 +1,15 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 class DataCleaner:
     def __init__(self, df):
         self.df = df
         self.housing_data = dict()
 
-    def clean(self) -> pd.DataFrame:
+    def clean(self, visualize_flag = False):
+
         # We clean first all the entirely empty rows
         self.df.dropna(how='all', inplace=True)
 
@@ -26,6 +28,18 @@ class DataCleaner:
         self.df = self.df[self.df['price'].notna()]
         self.df = self.df[self.df['area'].notna()]
 
+        # Dropping duplicated values
+        self.df = self.df.drop_duplicates(subset=['area', 'price'], keep='last')
+
+        # cleaning features with less than 5 occurrences
+        features = ['postalCode', 'facadeCount', 'subtypeProperty', 'BedroomsCount']
+        for feature in features:
+            self.df = self.df[self.df[feature].map(self.df[feature].value_counts()) > 5]
+
+        # Visualize relations between the variables throughout plots
+        if visualize_flag:
+            self.visualize()
+
         # Dropping outliers
         self.df = self.df[self.df['price'] < 6000000]
         self.df = self.df[self.df['area'] < 1350]
@@ -36,21 +50,9 @@ class DataCleaner:
 
         self.df.facadeCount.fillna(0, inplace=True)
 
-        # Dropping duplicated values
-        self.df = self.df.drop_duplicates(subset=['area', 'price'], keep='last')
-
-        # ploting behaviors
-        # plt.scatter(self.df.area, self.df.price)
-        # plt.show()
-
         # Deleting least correlated columns
         self.df = self.df.drop(
             ['kitchenType', 'typeSale', 'subtypeSale', 'terraceSurface', 'isFurnished', 'gardenSurface'], axis=1)
-
-        # cleaning features with less than 5 occurrences
-        features = ['postalCode', 'facadeCount', 'subtypeProperty', 'BedroomsCount']
-        for feature in features:
-            self.df = self.df[self.df[feature].map(self.df[feature].value_counts()) > 5]
 
         # Transform  variables into features
         features = ['postalCode', 'buildingCondition', 'subtypeProperty', 'fireplaceExists',
@@ -61,3 +63,28 @@ class DataCleaner:
                 cv_dummies.columns = [feature + 'True', feature + 'False']
             self.df = pd.concat([self.df, cv_dummies], axis=1)
             del self.df[feature]
+
+    def visualize(self):
+
+        # plotting the correlation heatmap
+        plt.figure()
+        features = self.df.drop('postalCode', axis=1)
+        sns.heatmap(features.corr(), center=0, cmap="YlGnBu")
+        plt.tight_layout()
+        plt.xticks(rotation=40)
+        plt.show()
+        plt.savefig('assets/Correlation map.png')
+
+        # Plotting all variables respect to price
+        for feature in self.df.columns:
+            print(feature)
+            if feature != 'price':
+                plt.figure()
+                sns.scatterplot(x=feature, y='price', data=self.df)
+                plt.title(feature + ' vs price')
+                plt.xlabel(feature)
+                plt.ylabel('price')
+                plt.xticks(rotation=40)
+                plt.savefig('assets/' + feature + ' vs price.png')
+                plt.tight_layout()
+                plt.show()
