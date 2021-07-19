@@ -59,9 +59,11 @@ features.
 In the second step, the prediction is prepared. Firstly, the price, area, outside space and land
 surface are standardized. This is done in order to limit the differences and make the model more
 effective.  
+  
 Secondly, the database is split and into a train and test dataframe. The former is used to train the
 model. A gradient boost is implemented.  
 In the final step, predictions are made using the test dataset.  
+  
 As an important addendum, we created a function that will prepare any new dataset to be pushed through
 the program and make predictions about the price.
 
