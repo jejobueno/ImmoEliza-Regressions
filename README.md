@@ -74,6 +74,6 @@ the program and make predictions about the price.
 
 
 ## Authors
-Jesús Bueno - Project Manager/dev & doc
-Pauwel De Wilde - dev & doc
+Jesús Bueno - Project Manager/dev & doc  
+Pauwel De Wilde - dev & doc  
 Camille de Neef & Hugo Pradier
