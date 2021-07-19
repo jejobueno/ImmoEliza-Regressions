@@ -1,14 +1,22 @@
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-class DataCleaner:
-    def __init__(self, df):
-        self.df = df
-        self.housing_data = dict()
 
-    def clean(self, visualize_flag = False):
+class DataCleaner:
+    def __init__(self):
+        self.df = pd.DataFrame
+
+    def clean(self, df: pd.DataFrame, visualize_flag: bool = False) -> pd.DataFrame:
+        """
+        This method will clean the dataframe deleting duplicated rows, fixing erros,
+        eliminating outliers. If visualize_flag set will plot correlation map
+        and relationships between the variables and the target price
+        :param df: dataframe to clean
+        :param visualize_flag: Will plot all relationships with variable price
+        :return: cleaned dataframe
+        """
+        self.df = df
 
         # We clean first all the entirely empty rows
         self.df.dropna(how='all', inplace=True)
@@ -22,6 +30,7 @@ class DataCleaner:
         has_USHyperEquipped = self.df['kitchenType'].apply(lambda x: 1 if x == 'USA_HYPER_EQUIPPED' else 0)
         self.df.hasFullyEquippedKitchen = has_hyperEquipped | has_USHyperEquipped
 
+        # Deleting variable 'typeProperty', keeping 'subtypeProperty'
         del self.df['typeProperty']
 
         # Dropping rows with price as NaN values
@@ -44,10 +53,12 @@ class DataCleaner:
         self.df = self.df[self.df['price'] < 6000000]
         self.df = self.df[self.df['area'] < 1350]
 
+        # Creating new variable adding outside surface
         self.df.terraceSurface.fillna(0, inplace=True)
         self.df.gardenSurface.fillna(0, inplace=True)
         self.df["outsideSpace"] = self.df["terraceSurface"] + self.df["gardenSurface"]
 
+        # Filling nan values to 0 for facadeCount
         self.df.facadeCount.fillna(0, inplace=True)
 
         # Deleting least correlated columns
@@ -64,7 +75,14 @@ class DataCleaner:
             self.df = pd.concat([self.df, cv_dummies], axis=1)
             del self.df[feature]
 
+        return self.df
+
     def visualize(self):
+        """
+        THis method will plot the heatmap correlation and the scatter plot between the
+        different features and the target price from
+        :return: None
+        """
 
         # plotting the correlation heatmap
         plt.figure()
