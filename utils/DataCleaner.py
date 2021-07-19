@@ -2,9 +2,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-
-# TODO : check score with between area and bedroomCount and without
-
 class DataCleaner:
     def __init__(self, df):
         self.df = df
@@ -23,11 +20,15 @@ class DataCleaner:
         has_USHyperEquipped = self.df['kitchenType'].apply(lambda x: 1 if x == 'USA_HYPER_EQUIPPED' else 0)
         self.df.hasFullyEquippedKitchen = has_hyperEquipped | has_USHyperEquipped
 
-        self.df['typeProperty'] = self.df['typeProperty'].apply(lambda x: 1 if x == 'HOUSE' else 0)
+        del self.df['typeProperty']
 
         # Dropping rows with price as NaN values
         self.df = self.df[self.df['price'].notna()]
         self.df = self.df[self.df['area'].notna()]
+
+        # Dropping outliers
+        self.df = self.df[self.df['price'] < 6000000]
+        self.df = self.df[self.df['area'] < 1350]
 
         self.df.terraceSurface.fillna(0, inplace=True)
         self.df.gardenSurface.fillna(0, inplace=True)
@@ -38,13 +39,9 @@ class DataCleaner:
         # Dropping duplicated values
         self.df = self.df.drop_duplicates(subset=['area', 'price'], keep='last')
 
-        # Dropping outliers
-        self.df = self.df[self.df['price'] < 7000000]
-        self.df = self.df[self.df['area'] < 1350]
-
         # ploting behaviors
-        #plt.scatter(self.df.area, self.df.price)
-        #plt.show()
+        # plt.scatter(self.df.area, self.df.price)
+        # plt.show()
 
         # Deleting least correlated columns
         self.df = self.df.drop(
@@ -64,4 +61,3 @@ class DataCleaner:
                 cv_dummies.columns = [feature + 'True', feature + 'False']
             self.df = pd.concat([self.df, cv_dummies], axis=1)
             del self.df[feature]
-
