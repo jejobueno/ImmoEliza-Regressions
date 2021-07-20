@@ -71,6 +71,16 @@ the program and make predictions about the price.
 
 <img width = "400" src = /assets/Correlation%20map.png> 
 
+
+**Rescaled area (square root) and price (logarhythmic):**
+
+<img width = "400" src = /assets/Rescaled%20sqrtArea%20vs%20logPrice.png> 
+
+
+**Predictions vs. expected values**
+
+<img width = "400" src = /assets/predictions%20VS%20y.png>
+
 ## Authors
 Jesús Bueno - Project Manager/dev & doc  
 Pauwel De Wilde - dev & doc  
