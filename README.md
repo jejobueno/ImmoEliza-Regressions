@@ -69,7 +69,7 @@ the program and make predictions about the price.
 
 **Correlation map:**
 
-<img width = "400" src = /assets/Correlation-map.png> 
+<img width = "400" src = /assets/Correlation%20map.png> 
 
 ## Authors
 Jesús Bueno - Project Manager/dev & doc  
