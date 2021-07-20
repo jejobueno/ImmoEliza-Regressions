@@ -18,8 +18,7 @@ class DataRegressor:
         self.regressor = LinearRegression()
         self.newData = pd.DataFrame()
 
-    @staticmethod
-    def rescale(df):
+    def rescale(self, df):
         """ This static method will standardize some of the features,
         all the areas (square meter) will be rescaled into their square root
         and the price into its logarithm
@@ -32,13 +31,6 @@ class DataRegressor:
         df['outsideSpace'] = np.sqrt(df['outsideSpace'])
         df['landSurface'] = np.sqrt(df['landSurface'])
 
-        plt.figure()
-        plt.scatter(df.area, df.price)
-        plt.title('Rescaled sqrtArea vs logPrice')
-        plt.xticks(rotation=40)
-        plt.show()
-        plt.savefig('assets/Rescaled sqrtArea vs logPrice')
-
         return df
 
     def trainModel(self):
@@ -46,6 +38,16 @@ class DataRegressor:
         # observation of the linear relationship between them and help
         # our model to do better predictions
         self.df = self.rescale(self.df)
+
+        plt.figure()
+        plt.scatter(self.df.area, self.df.price, color='b')
+        plt.title('Rescaled sqrtArea vs logPrice')
+        plt.xticks(rotation=40)
+        plt.xlabel('logArea')
+        plt.ylabel('sqrtPrice')
+        plt.tight_layout()
+        plt.show()
+        plt.savefig('assets/Rescaled sqrtArea vs logPrice', transparent=True)
 
         # We split our target and our features in numpy arrays
         y = self.df['price'].to_numpy()
@@ -67,20 +69,20 @@ class DataRegressor:
 
         # Print the results
         plt.figure()
-        plt.scatter(y_test, predictions, color='r')
+        plt.scatter(y_test, predictions, color='b')
         plt.title('predictions VS y_test')
         plt.xlabel('y_test')
         plt.ylabel('predictions')
-        plt.savefig('assets/predictions VS y_test.png')
+        plt.savefig('assets/predictions VS y_test.png', transparent=True)
 
         plt.figure()
-        plt.scatter(X_test[:,1]**2, np.exp(predictions), color='b')
         plt.scatter(X_test[:,1]**2, np.exp(y_test), color='r')
+        plt.scatter(X_test[:,1]**2, np.exp(predictions), color='b')
         plt.title('predictions vs original data')
         plt.legend(['predictions','original data'])
         plt.xlabel('area')
         plt.ylabel('price')
-        plt.savefig('assets/predictions vs original data.png')
+        plt.savefig('assets/predictions vs original data.png', transparent=True)
         plt.show()
 
     def predict(self, df):
@@ -114,6 +116,7 @@ class DataRegressor:
         plt.legend(['predictions','original data'])
         plt.xlabel('area')
         plt.ylabel('price')
+        plt.tight_layout()
         plt.savefig('assets/predictions vs data.png')
         plt.show()
 

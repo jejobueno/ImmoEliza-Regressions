@@ -12,11 +12,11 @@ data = pd.read_csv('assets/housing-data.csv', index_col=0)
 # Create a new object DataCleaner to clean our data
 # and visualize it
 dataAnalyser = DataCleaner()
-df = dataAnalyser.clean(data, visualize_flag=True)
-
+df = dataAnalyser.clean(data, visualize_flag=False)
 # Create a new object DataRegressor which will contain
 # our trained model for future predictions with different dataframes
 dataRegressor = DataRegressor(df)
+
 
 # Train the model of the regressor
 dataRegressor.trainModel()

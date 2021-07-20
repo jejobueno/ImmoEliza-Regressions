@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+from utils.realStateBelgiumStats import splitByRegions,createDataFrameStat
 
 class DataCleaner:
     def __init__(self):
@@ -61,9 +62,13 @@ class DataCleaner:
         # Filling nan values to 0 for facadeCount
         self.df.facadeCount.fillna(0, inplace=True)
 
-        # Deleting least correlated columns
+        # Deleting least correlated, reformatted and constant columns
         self.df = self.df.drop(
             ['kitchenType', 'typeSale', 'subtypeSale', 'terraceSurface', 'isFurnished', 'gardenSurface'], axis=1)
+
+        dict = splitByRegions(self.df)
+        for key, df in dict.items():
+            createDataFrameStat(self.df, df, key)
 
         # Transform  variables into features
         features = ['postalCode', 'buildingCondition', 'subtypeProperty', 'fireplaceExists',
@@ -87,21 +92,20 @@ class DataCleaner:
         # plotting the correlation heatmap
         plt.figure()
         features = self.df.drop('postalCode', axis=1)
-        sns.heatmap(features.corr(), center=0, cmap="YlGnBu")
+        sns.heatmap(features.corr()[['price']], center=0, annot=True, cmap="YlGnBu")
         plt.tight_layout()
-        plt.xticks(rotation=40)
         plt.show()
-        plt.savefig('assets/Correlation map.png')
+        plt.savefig('assets/Correlation map.png', transparent=True)
 
         # Plotting all variables respect to price
         for feature in self.df.columns:
             if feature != 'price':
                 plt.figure()
-                sns.scatterplot(x=feature, y='price', data=self.df)
+                sns.scatterplot(x=feature, y='price', data=self.df, color='b')
                 plt.title(feature + ' vs price')
                 plt.xlabel(feature)
                 plt.ylabel('price')
                 plt.xticks(rotation=40)
-                plt.savefig('assets/' + feature + ' vs price.png')
                 plt.tight_layout()
+                plt.savefig('assets/' + feature + ' vs price.png', transparent=True)
                 plt.show()
