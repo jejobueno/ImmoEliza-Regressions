@@ -14,7 +14,7 @@ repos:
       # Make sure to make it compatible with black
       args: 
         - -rc
-        - --lines=120
+        - --lines=79
         - --use-parentheses
         - --multi-line=3
     - id: black
