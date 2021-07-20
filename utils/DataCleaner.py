@@ -95,7 +95,6 @@ class DataCleaner:
 
         # Plotting all variables respect to price
         for feature in self.df.columns:
-            print(feature)
             if feature != 'price':
                 plt.figure()
                 sns.scatterplot(x=feature, y='price', data=self.df)
