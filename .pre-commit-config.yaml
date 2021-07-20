@@ -24,7 +24,7 @@ repos:
       entry: black
       types: [python]
       args:
-        - --line-length=122
+        - --line-length=79
     - id: flake8
       name: flake8
       description: 'Check logic issues'
