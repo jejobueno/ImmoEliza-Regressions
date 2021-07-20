@@ -16,7 +16,7 @@ repos:
         - -rc
         - --lines=79
         - --use-parentheses
-        - --multi-line10
+        - --multi-line=10
     - id: black
       name: black
       language: system
