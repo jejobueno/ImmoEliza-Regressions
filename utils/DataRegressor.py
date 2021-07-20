@@ -6,7 +6,6 @@ from sklearn.model_selection import train_test_split
 
 
 class DataRegressor:
-
     def __init__(self, df: pd.DataFrame):
         """
         It creates a DataRegressor object containing the dataFrame we are going
@@ -19,17 +18,17 @@ class DataRegressor:
         self.newData = pd.DataFrame()
 
     def rescale(self, df):
-        """ This static method will standardize some of the features,
+        """This static method will standardize some of the features,
         all the areas (square meter) will be rescaled into their square root
         and the price into its logarithm
         :param df: cleaned data frame to resale
         :return: rescaleded dataframe
         """
 
-        df['price'] = np.log(df['price'])
-        df['area'] = np.sqrt(df['area'])
-        df['outsideSpace'] = np.sqrt(df['outsideSpace'])
-        df['landSurface'] = np.sqrt(df['landSurface'])
+        df["price"] = np.log(df["price"])
+        df["area"] = np.sqrt(df["area"])
+        df["outsideSpace"] = np.sqrt(df["outsideSpace"])
+        df["landSurface"] = np.sqrt(df["landSurface"])
 
         return df
 
@@ -40,49 +39,53 @@ class DataRegressor:
         self.df = self.rescale(self.df)
 
         plt.figure()
-        plt.scatter(self.df.area, self.df.price, color='b')
-        plt.title('Rescaled sqrtArea vs logPrice')
+        plt.scatter(self.df.area, self.df.price, color="b")
+        plt.title("Rescaled sqrtArea vs logPrice")
         plt.xticks(rotation=40)
-        plt.xlabel('logArea')
-        plt.ylabel('sqrtPrice')
+        plt.xlabel("logArea")
+        plt.ylabel("sqrtPrice")
         plt.tight_layout()
         plt.show()
-        plt.savefig('assets/Rescaled sqrtArea vs logPrice', transparent=True)
+        plt.savefig("assets/Rescaled sqrtArea vs logPrice", transparent=True)
 
         # We split our target and our features in numpy arrays
-        y = self.df['price'].to_numpy()
-        X = self.df.drop(['price'], axis=1).to_numpy()
+        y = self.df["price"].to_numpy()
+        X = self.df.drop(["price"], axis=1).to_numpy()
 
         # We split our data into a train and test datasets
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=0.10, random_state=42
+        )
 
         # Se fit our regression model to the train data
         self.regressor.fit(X_train, y_train)
 
         # print scores
-        print( '############# LINEAR REGRESSOR #############')
-        print('Train score', self.regressor.score(X_train, y_train))
-        print('Test score', self.regressor.score(X_test, y_test))
+        print("############# LINEAR REGRESSOR #############")
+        print("Train score", self.regressor.score(X_train, y_train))
+        print("Test score", self.regressor.score(X_test, y_test))
 
         # Make predictions on test datasets
         predictions = self.regressor.predict(X_test)
 
         # Print the results
         plt.figure()
-        plt.scatter(y_test, predictions, color='b')
-        plt.title('predictions VS y_test')
-        plt.xlabel('y_test')
-        plt.ylabel('predictions')
-        plt.savefig('assets/predictions VS y_test.png', transparent=True)
+        plt.scatter(y_test, predictions, color="b")
+        plt.title("predictions VS y_test")
+        plt.xlabel("y_test")
+        plt.ylabel("predictions")
+        plt.savefig("assets/predictions VS y_test.png", transparent=True)
 
         plt.figure()
-        plt.scatter(X_test[:,1]**2, np.exp(y_test), color='r')
-        plt.scatter(X_test[:,1]**2, np.exp(predictions), color='b')
-        plt.title('predictions vs original data')
-        plt.legend(['predictions','original data'])
-        plt.xlabel('area')
-        plt.ylabel('price')
-        plt.savefig('assets/predictions vs original data.png', transparent=True)
+        plt.scatter(X_test[:, 1] ** 2, np.exp(y_test), color="r")
+        plt.scatter(X_test[:, 1] ** 2, np.exp(predictions), color="b")
+        plt.title("predictions vs original data")
+        plt.legend(["predictions", "original data"])
+        plt.xlabel("area")
+        plt.ylabel("price")
+        plt.savefig(
+            "assets/predictions vs original data.png", transparent=True
+        )
         plt.show()
 
     def predict(self, df):
@@ -95,37 +98,37 @@ class DataRegressor:
         self.adjustToTrainedModelDF(df)
         self.newData = self.rescale(self.newData)
 
-        y = self.newData['price'].to_numpy()
-        X = self.newData.drop(['price'], axis=1).to_numpy()
+        y = self.newData["price"].to_numpy()
+        X = self.newData.drop(["price"], axis=1).to_numpy()
 
-        print( '############# LINEAR REGRESSOR FOR NEW DATA #############')
-        print('score', self.regressor.score(X, y))
+        print("############# LINEAR REGRESSOR FOR NEW DATA #############")
+        print("score", self.regressor.score(X, y))
         predictions = self.regressor.predict(X)
 
         plt.figure()
-        plt.scatter(y, predictions, color='r')
-        plt.title('predictions VS y')
-        plt.xlabel('y_test')
-        plt.ylabel('predictions')
-        plt.savefig('assets/predictions VS y.png')
+        plt.scatter(y, predictions, color="r")
+        plt.title("predictions VS y")
+        plt.xlabel("y_test")
+        plt.ylabel("predictions")
+        plt.savefig("assets/predictions VS y.png")
 
         plt.figure()
-        plt.scatter(X[:,1]**2, np.exp(predictions), color='b')
-        plt.scatter(X[:,1]**2, np.exp(y), color='r')
-        plt.title('predictions vs data')
-        plt.legend(['predictions','original data'])
-        plt.xlabel('area')
-        plt.ylabel('price')
+        plt.scatter(X[:, 1] ** 2, np.exp(predictions), color="b")
+        plt.scatter(X[:, 1] ** 2, np.exp(y), color="r")
+        plt.title("predictions vs data")
+        plt.legend(["predictions", "original data"])
+        plt.xlabel("area")
+        plt.ylabel("price")
         plt.tight_layout()
-        plt.savefig('assets/predictions vs data.png')
+        plt.savefig("assets/predictions vs data.png")
         plt.show()
 
         return np.exp(self.regressor.predict(X))
 
     def adjustToTrainedModelDF(self, df):
         """
-        This method fit the new data into the format of the X dataset from the model
-        to be able to predict using the model of the regressor
+        This method fit the new data into the format of the X dataset from
+         the model to be able to predict using the model of the regressor
         :param df: new dataframe to fit into the X format.
         :return: None
         """
@@ -138,6 +141,3 @@ class DataRegressor:
 
         # Fill all the nan values with zeros
         self.newData.fillna(0, inplace=True)
-
-
-
