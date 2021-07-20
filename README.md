@@ -61,13 +61,13 @@ In the second step, the prediction is prepared. Firstly, the price, area, outsid
 surface are rescaled. This is done in order to limit the differences and make the model more
 effective.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Secondly, the database is split and into a train and test dataframe. The former is used to train the
-model. A gradient boost is implemented.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Secondly, the database is split and into a train and test dataframe. The former is used to train the model. A gradient 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boost is implemented.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In the final step, predictions are made using the test dataset.  
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As an important addendum, we created a function that will prepare any new dataset to be pushed through
-the program and make predictions about the price.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As an important addendum, we created a function that will prepare any new dataset to be pushed through the 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;program and make predictions about the price.
 
 ## Examples
 
