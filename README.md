@@ -1,5 +1,6 @@
 
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-360/)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/jejobueno/ImmoEliza-Regressions/main.svg)](https://results.pre-commit.ci/latest/github/jejobueno/ImmoEliza-Regressions/main)
 <div align = "center">
 
 <h3>Becode AI training
