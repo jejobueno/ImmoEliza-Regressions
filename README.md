@@ -44,8 +44,8 @@ When you run the program, you will get:
 - a print of the regressor score,
 - a list of data that are to be predicted (based on the test dataframe),
 - a list of the predictions themselves,
-- four plots (the normalized data, the predictions vs the y_test database to show the accuracy, 
-the boosted predictions, and the normalized data of the test dataframe)
+- some useful plots (the normalized data, the predictions vs the y_test database to show the accuracy, 
+the boosted predictions, and the normalized data of the test dataframe, ...)
 
 ## How it works
 1. DataCleaner
@@ -57,7 +57,7 @@ features.
 
 2. DataRegressor
 In the second step, the prediction is prepared. Firstly, the price, area, outside space and land
-surface are standardized. This is done in order to limit the differences and make the model more
+surface are rescaled. This is done in order to limit the differences and make the model more
 effective.  
   Secondly, the database is split and into a train and test dataframe. The former is used to train the
 model. A gradient boost is implemented.  
