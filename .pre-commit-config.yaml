@@ -8,15 +8,14 @@ repos:
       entry: black
       types: [python]
       args:
-        - --line-length=79
-        
+        - --line-length=79   
 -   repo: https://gitlab.com/pycqa/flake8
     rev: 3.7.9
     hooks:
     - id: flake8
       name: flake8
       description: 'Check logic issues'
-      language: system
+      language_version: python3.6
       entry: flake8
       types: [python]
 
