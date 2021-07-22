@@ -118,7 +118,7 @@ class DataCleaner:
             self.df = pd.concat([self.df, cv_dummies], axis=1)
             del self.df[feature]
 
-        return self.df
+        return self.df.reset_index(drop=True)
 
     def visualize(self):
         """
