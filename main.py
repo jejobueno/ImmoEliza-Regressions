@@ -17,7 +17,6 @@ df = dataAnalyser.clean(data, visualize_flag=False)
 # our trained model for future predictions with different dataframes
 dataRegressor = DataRegressor(df)
 
-
 # Train the model of the regressor
 dataRegressor.trainModel()
 
@@ -31,3 +30,6 @@ df = dataAnalyser.clean(data)
 
 # We do a prediction with our trained model
 predictions = dataRegressor.predict(df)
+
+for i in range(len(predictions)):
+    print(f"Prediction: {predictions[i]} -> real price: {df['price'][i]}")
